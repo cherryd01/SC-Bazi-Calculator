@@ -1,0 +1,65 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple BaZi Day Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h2, h3 { color: #333; }
+        label { font-weight: bold; }
+        input { margin-bottom: 10px; }
+        button { padding: 10px 15px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <h2>BaZi Day Calculator (Zi-hour Correct)</h2>
+
+    <label>Date:</label>
+    <input type="date" id="date"><br><br>
+
+    <label>Time:</label>
+    <input type="time" id="time"><br><br>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <h3 id="result"></h3>
+
+    <script>
+        function calculate() {
+            const date = new Date(
+                document.getElementById("date").value + "T" +
+                document.getElementById("time").value
+            );
+
+            let hour = date.getHours();
+
+            // Zi hour rollover
+            if (hour >= 23) {
+                date.setDate(date.getDate() + 1);
+            }
+
+            // Jia-Zi cycle reference: Feb 4, 1984 = Jia Zi
+            const baseDate = new Date("1984-02-04");
+            const diffDays = Math.floor((date - baseDate) / 86400000);
+            const cycleIndex = (diffDays % 60 + 60) % 60;
+
+            const branches = [
+                "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake",
+                "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"
+            ];
+
+            const branch = branches[cycleIndex % 12];
+
+            document.getElementById("result").innerText =
+                "Day Branch (Animal): " + branch +
+                "\n(Ji-hour rollover applied)";
+        }
+    </script>
+</body>
+</html>
+
+
